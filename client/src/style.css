@@ -56,6 +56,15 @@ h1 { margin-top: 7px; font: 600 29px Manrope, sans-serif; letter-spacing: 0; }
 .reminder-action > span:last-child { font-size: 11px; font-weight: 700; }
 .reminder-action small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; font-weight: 400; }
 .reminder-icon { display: grid; width: 29px; height: 29px; place-items: center; border: 1px solid #dce6d8; border-radius: 50%; background: var(--soft-green); color: var(--green); font-size: 16px; }
+.overdue-alert { margin-top: 18px; padding: 15px 17px; border: 1px solid #eed2cb; border-left: 3px solid var(--red); border-radius: 4px; background: #fff9f7; color: #633a34; }
+.overdue-alert-heading { display: flex; align-items: center; gap: 10px; }
+.overdue-alert-icon { display: grid; flex: 0 0 24px; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--soft-red); color: var(--red); font-weight: 700; }
+.overdue-alert h2 { font: 600 13px Manrope, sans-serif; }
+.overdue-alert p { margin-top: 3px; color: #84665f; font-size: 10px; }
+.overdue-alert ul { display: grid; gap: 7px; margin: 12px 0 0 34px; padding: 0; list-style: none; }
+.overdue-alert li { display: flex; justify-content: space-between; gap: 12px; font-size: 10px; }
+.overdue-alert li span { color: #84665f; }
+.overdue-alert > button { margin: 12px 0 0 34px; padding: 0; border: 0; background: transparent; color: var(--red); font-size: 10px; font-weight: 700; text-decoration: underline; }
 .queue-section { margin-top: 36px; }
 .queue-heading { margin-bottom: 15px; }
 .queue-heading h2, .form-heading h2 { margin-top: 5px; font: 600 18px Manrope, sans-serif; }
@@ -125,6 +134,8 @@ td.request-title-cell { min-width: 220px; color: var(--ink); }
   .summary-label { font-size: 8px; letter-spacing: .5px; }
   .summary-item strong { font-size: 20px; }
   .summary-note { font-size: 9px; }
+  .overdue-alert li { align-items: start; flex-direction: column; gap: 2px; }
+  .overdue-alert ul, .overdue-alert > button { margin-left: 0; }
   .queue-section { margin-top: 28px; }
   .queue-heading { align-items: start; }
   .filter-control { gap: 5px; }

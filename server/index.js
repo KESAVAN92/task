@@ -2,12 +2,30 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
+import net from 'node:net';
 import { randomUUID } from 'node:crypto';
 import Request from './models/Request.js';
 
 const app = express();
-const port = Number(process.env.PORT || 5000);
+const preferredPort = Number(process.env.PORT || 5000);
 const statuses = ['Open', 'In progress', 'Completed'];
+
+async function getAvailablePort(startPort) {
+  for (let port = startPort; port < startPort + 20; port += 1) {
+    const isAvailable = await new Promise((resolve) => {
+      const tester = net.createServer();
+      tester.once('error', () => resolve(false));
+      tester.once('listening', () => {
+        tester.close(() => resolve(true));
+      });
+      tester.listen(port);
+    });
+
+    if (isAvailable) return port;
+  }
+
+  throw new Error(`No free port available starting from ${startPort}.`);
+}
 const mongoEnabled = Boolean(process.env.MONGO_URI);
 let memoryRequests = [];
 const lastReminderAt = new Map();
@@ -178,6 +196,8 @@ app.use((error, _req, res, _next) => {
 });
 
 async function start() {
+  const port = await getAvailablePort(preferredPort);
+
   if (mongoEnabled) {
     await mongoose.connect(process.env.MONGO_URI);
     if (await Request.countDocuments() === 0) await Request.insertMany(sampleRequests);

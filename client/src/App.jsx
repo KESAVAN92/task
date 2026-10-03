@@ -40,7 +40,8 @@ export default function App() {
 
   useEffect(() => { loadRequests(); }, []);
 
-  const overdueCount = requests.filter(isOverdue).length;
+  const overdueRequests = requests.filter(isOverdue);
+  const overdueCount = overdueRequests.length;
   const activeCount = requests.filter((request) => request.status !== 'Completed').length;
   const visibleRequests = requests.filter((request) => {
     if (filter === 'All requests') return true;
@@ -130,6 +131,15 @@ export default function App() {
             <div className="summary-item"><span className="summary-label">TOTAL IN QUEUE</span><strong>{requests.length.toString().padStart(2, '0')}</strong><span className="summary-note">Across all statuses</span></div>
             <button className="reminder-action" type="button" onClick={generateReminders}><span className="reminder-icon">↗</span><span>Generate reminders<small>For open overdue work</small></span></button>
           </section>
+
+          {!loading && overdueCount > 0 && <section className="overdue-alert" role="alert" aria-labelledby="overdue-alert-title">
+            <div className="overdue-alert-heading">
+              <span className="overdue-alert-icon" aria-hidden="true">!</span>
+              <div><h2 id="overdue-alert-title">{overdueCount} overdue {overdueCount === 1 ? 'request needs' : 'requests need'} attention</h2><p>These open requests are past their due date:</p></div>
+            </div>
+            <ul>{overdueRequests.map((request) => <li key={request._id}><strong>{request.title}</strong><span>{request.clientName} · Assigned to {request.assignee}</span></li>)}</ul>
+            <button type="button" onClick={() => setFilter('Overdue')}>View overdue requests</button>
+          </section>}
 
           {showForm && <form className="request-form" onSubmit={createRequest}>
             <div className="form-heading"><div><span className="eyebrow">NEW WORK ITEM</span><h2>Add a request</h2></div><button className="close-button" type="button" aria-label="Close form" onClick={() => setShowForm(false)}>×</button></div>
